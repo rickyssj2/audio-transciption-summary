@@ -2,22 +2,25 @@
 
 import { useRecordVoice } from "@/hooks/useRecordVoice";
 import { useEffect } from "react";
+import * as Toggle from "@radix-ui/react-toggle";
+import { FaMicrophone } from 'react-icons/fa';
+import "./styles.css";
 
 
 const MicrophoneButton = () => {
-  const { startRecording, stopRecording, audioBlob, transcription, summary } = useRecordVoice();
+  const { recording, startRecording, stopRecording, audioBlob, transcription, summary } = useRecordVoice();
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <button
-        onMouseDown={startRecording}
-        onMouseUp={stopRecording}
+      <Toggle.Root
+        className="Toggle"
+        aria-label="Toggle italic"
+        onClick={recording ? stopRecording: startRecording}
         onTouchStart={startRecording}
         onTouchEnd={stopRecording}
-        className="border-none bg-transparent w-10"
-      >
-        🎙️
-      </button>
+        >
+        <FaMicrophone />
+      </Toggle.Root>
       <p>Transcription: {transcription}</p>
       <p>Summary: {summary}</p>
     </div>
