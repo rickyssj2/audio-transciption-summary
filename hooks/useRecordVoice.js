@@ -6,6 +6,7 @@ export const useRecordVoice = () => {
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [transcription, setTranscription] = useState("");
+  const [summary, setSummary] = useState("");
   const mediaRecorder = useRef(null);
   const chunks = useRef([]);
 
@@ -48,8 +49,9 @@ export const useRecordVoice = () => {
           });
 
           const data = await response.json();
-          if (data.text) {
-            setTranscription(data.text);
+          if (data) {
+            setTranscription(data.transcription);
+            setSummary(data.summary)
           } else {
             console.error("Failed to retrieve transcription");
           }
@@ -68,5 +70,5 @@ export const useRecordVoice = () => {
     }
   }, []);
 
-  return { recording, startRecording, stopRecording, audioBlob, transcription };
+  return { recording, startRecording, stopRecording, audioBlob, transcription, summary };
 };

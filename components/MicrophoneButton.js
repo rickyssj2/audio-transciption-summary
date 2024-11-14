@@ -3,11 +3,12 @@
 import { useRecordVoice } from "@/hooks/useRecordVoice";
 import { useEffect } from "react";
 
+
 const MicrophoneButton = () => {
-  const { startRecording, stopRecording, recording, transcription } = useRecordVoice();
+  const { startRecording, stopRecording, audioBlob, transcription, summary } = useRecordVoice();
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col justify-center items-center">
       <button
         onMouseDown={startRecording}
         onMouseUp={stopRecording}
@@ -17,9 +18,9 @@ const MicrophoneButton = () => {
       >
         🎙️
       </button>
-      {transcription && <p>Transcription: {transcription}</p>}
+      <p>Transcription: {transcription}</p>
+      <p>Summary: {summary}</p>
     </div>
   );
-};
-
+}
 export default MicrophoneButton;
