@@ -1,7 +1,7 @@
 
 .Toggle {
-	background-color: white;
-	color: black;
+	background-color: black;
+	color: white;
 	height: 35px;
 	width: 35px;
 	border-radius: 50%;
@@ -10,14 +10,11 @@
 	line-height: 1;
 	align-items: center;
 	justify-content: center;
-	box-shadow: 0 2px 10px black;
 }
 .Toggle:hover {
-	background-color: gray;
+	opacity: 70%;
 }
 .Toggle[data-state="on"] {
-	background-color: red;
+	background-color: #FF746C;
 }
-.Toggle:focus {
-	box-shadow: 0 0 0 2px black;
-}
+

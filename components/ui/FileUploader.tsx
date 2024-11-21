@@ -37,7 +37,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
     
 
     return (
-        <Card className="w-full sm:max-w-4xl mx-auto sm:min-h-[25vh] overflow-y-auto">
+        <Card className="w-full sm:max-w-4xl mx-auto sm:min-h-[15vh] overflow-y-auto">
          <CardHeader>
            <CardTitle className="flex items-center gap-2 font-serif font-medium text-xl justify-center">
              {title}
@@ -46,7 +46,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
          <CardContent>
            <div className="space-y-4 text-center">
              <div>
-               <Button variant="outline" className="w-80 text-center relative mb-2">
+              <div className="flex justify-center items-center">
+               <Button variant="outline" className="w-80 text-center relative">
                  <input
                    type="file"
                    className="absolute inset-0  h-full opacity-0 cursor-pointer "
@@ -61,6 +62,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
                  />
                  Choose File
                </Button>
+               <Button onClick={handleUploadWrapper} className="ml-2">
+                {loading2 ? 'Uploading....' : 'Upload'}
+                <FaCloudUploadAlt />
+               </Button>
+              </div>
                <div className="flex justify-center items-center">
                 {file?.name && (
                   <p className='text-center'>Selected file: {file?.name}</p>)}
@@ -68,9 +74,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
                   <IconContext.Provider
                     value={{ color: "#77DD77"}}
                   >
-                    <div>
-                      <FaCheckCircle className="ml-2"/>
-                    </div>
+                    <FaCheckCircle className="ml-2"/>
                   </IconContext.Provider>
                 )}
                </div>
@@ -80,10 +84,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
                <div className="p-4 text-red-500 bg-red-50 rounded">{error}</div>
              )}
              
-             <Button onClick={handleUploadWrapper} className="mt-20">
-             {loading2 ? 'Uploading....' : 'Upload'}
-             <FaCloudUploadAlt />
-             </Button>
+             
              {loading2 && <div className="">
            <p className="text-neutral-500 font-serif font-playfair text-2xl sm:text-md mb-8 mt-10">
 

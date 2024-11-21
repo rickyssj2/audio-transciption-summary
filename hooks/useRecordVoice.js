@@ -12,8 +12,13 @@ export const useRecordVoice = () => {
 
   const startRecording = () => {
     if (mediaRecorder.current) {
-      mediaRecorder.current.start();
-      setRecording(true);
+      try {
+        mediaRecorder.current.start();
+        setRecording(true);
+      } catch (error) {
+        console.log("Error: ", error)
+      }
+      
     }
   };
 
