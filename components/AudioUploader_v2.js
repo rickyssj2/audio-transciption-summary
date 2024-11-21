@@ -23,6 +23,7 @@ const AudioUploaderV2 = () => {
   const [generateSummary, setGenerateSummary] = useState(false);
   const [file, setFile] = useState(new File([], ""));
   const [error, setError] = useState("");
+  const [isUploaded, setIsUploaded] = useState(false)
 
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
@@ -40,6 +41,14 @@ const AudioUploaderV2 = () => {
       console.log(`File: ${file.name}, Size: ${file.size} bytes`);
     });
   };
+  // Dummy File Upload handler
+  const handleUpload = async () => {
+    //TODO: implement to upload files to Cloud
+    return new Promise((resolve) => setTimeout(() => {
+      resolve(console.log("File uploaded"))
+    }, 1000)
+    )
+  }
 
   const handleGenerate = async () => {
     if (!file) {
@@ -47,7 +56,7 @@ const AudioUploaderV2 = () => {
       return;
     }
 
-    // setLoading(true);
+    setLoading(true);
 
     
     try {
@@ -84,54 +93,51 @@ const AudioUploaderV2 = () => {
   };
 
   return (
-    <div className="max-w-screen-md">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <FileUploader title="Upload an audio file to get transcription and summary" handleUpload={handleGenerate} handleFileChange={handleFileChange} file={file} error={error}/>
-          <div className="mt-4">
-            <label>
-              <input
-                type="checkbox"
-                checked={generateTranscription}
-                onChange={() => setGenerateTranscription((prev) => !prev)}
-              />
-              Transcription
-            </label>
-            <label className="ml-4">
-              <input
-                type="checkbox"
-                checked={generateSummary}
-                onChange={() => setGenerateSummary((prev) => !prev)}
-              />
-              Summary
-            </label>
-          </div>
-          {transcription && (
-            <div className="mt-4">
-              <h3>Transcription:</h3>
-              <p>{transcription}</p>
-              <Button
-                onClick={() => handleDownload(transcription, "transcription.txt")}
-              >
-                Download Transcription
-              </Button>
-            </div>
-          )}
-          {summary && (
-            <div className="mt-4">
-              <h3>Summary:</h3>
-              <p>{summary}</p>
-              <Button
-                onClick={() => handleDownload(summary, "summary.txt")}
-              >
-                Download Summary
-              </Button>
-            </div>
-          )}
-        </>
+    <div className="w-full sm:max-w-4xl mx-auto sm:min-h-[25vh] overflow-y-auto">            
+      <FileUploader title="Upload an audio file to get transcription and summary" handleUpload={handleUpload} handleFileChange={handleFileChange} file={file} error={error} isUploaded={isUploaded} setIsUploaded={setIsUploaded}/>
+      <div className="flex flex-col mt-4">
+        <label>
+          <input
+            type="checkbox"
+            checked={generateTranscription}
+            onChange={() => setGenerateTranscription((prev) => !prev)}
+          />
+          Transcription
+        </label>
+        <label className="mt-2">
+          <input
+            type="checkbox"
+            checked={generateSummary}
+            onChange={() => setGenerateSummary((prev) => !prev)}
+          />
+          Summary
+        </label>
+      </div>
+      <Button variant={isUploaded ? "default" : "disabled"} className="mt-4" onClick={handleGenerate}>
+        {loading ? "Generating..." : "Generate"}
+      </Button>
+      {transcription && (
+        <div className="mt-4">
+          <h3>Transcription:</h3>
+          <p>{transcription}</p>
+          <Button
+            onClick={() => handleDownload(transcription, "transcription.txt")}
+          >
+            Download Transcription
+          </Button>
+        </div>
       )}
+      {summary && (
+        <div className="mt-4">
+          <h3>Summary:</h3>
+          <p>{summary}</p>
+          <Button
+            onClick={() => handleDownload(summary, "summary.txt")}
+          >
+            Download Summary
+          </Button>
+        </div>
+      )}    
     </div>
   );
 };

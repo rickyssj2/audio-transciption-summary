@@ -14,7 +14,7 @@ function MyApp() {
     <StyletronProvider value={styletron}>
       <BaseProvider theme={LightTheme}>
         <div className="min-h-screen flex flex-col items-center justify-evenly">
-          <h1>Voice Recording App</h1>
+          <h1 className="font-serif font-medium text-2xl">Generate Transcription & Summary from audio</h1>
           <MicrophoneButton />
           {/* <AudioUploader /> */}
           <AudioUploaderV2 />

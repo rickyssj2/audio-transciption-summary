@@ -4,27 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Label } from "@/components/ui/label";
 import { Document, Packer, Paragraph, TextRun } from "docx";
-import { Typewriter } from 'react-simple-typewriter'
+import { Typewriter } from 'react-simple-typewriter';
+import { FaCheckCircle, FaCloudUploadAlt } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 interface FileUploaderProps {
   title: string;
-  handleUpload: () => void; // Function with no parameters and no return value
-  handleFileChange: (file: File | null) => void; // Function that handles a File or null
+  handleUpload: () => Promise<string>; // Function with no parameters and no return value
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Function that handles an event
   file: File | null; // File object or null
   error: string | null; // Error message or null
 }
 
-const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleFileChange, file, error}) => {
+const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleFileChange, file, error, isUploaded, setIsUploaded}) => {
 
     ////////////////////////////////////////////////////////////////////////
     
     const [loading2, setLoading2] = useState(false);
+    
     ////////////////////////////////////////////////////////////////////////////////////////////
     const handleUploadWrapper = async () => {
-      setLoading2(true)
-      await handleUpload()
-      setLoading2(false)
-    }
+      try {
+        setLoading2(true);
+        await handleUpload();
+        setIsUploaded(true)
+      } catch (error) {
+        console.error("Error during upload:", error);
+      } finally {
+        setLoading2(false);
+      }
+    };
+    
 
     return (
         <Card className="w-full sm:max-w-4xl mx-auto sm:min-h-[25vh] overflow-y-auto">
@@ -45,15 +55,25 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
                    aria-label="Choose a file"
                    onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      handleUpload.call();
+                      handleUpload.call(null);
                     }
                   }}
                  />
                  Choose File
                </Button>
-               {file.name && (
-    <p className='text-center mt-4'>Selected file: {file.name}</p>
-  )}
+               <div className="flex justify-center items-center">
+                {file?.name && (
+                  <p className='text-center'>Selected file: {file?.name}</p>)}
+                {isUploaded && (
+                  <IconContext.Provider
+                    value={{ color: "#77DD77"}}
+                  >
+                    <div>
+                      <FaCheckCircle className="ml-2"/>
+                    </div>
+                  </IconContext.Provider>
+                )}
+               </div>
              </div>          
              
              {error && (
@@ -62,6 +82,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleF
              
              <Button onClick={handleUploadWrapper} className="mt-20">
              {loading2 ? 'Uploading....' : 'Upload'}
+             <FaCloudUploadAlt />
              </Button>
              {loading2 && <div className="">
            <p className="text-neutral-500 font-serif font-playfair text-2xl sm:text-md mb-8 mt-10">
