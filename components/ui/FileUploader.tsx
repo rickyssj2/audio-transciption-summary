@@ -2,27 +2,23 @@ import React from "react";
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Label } from "@/components/ui/label";
-import { Document, Packer, Paragraph, TextRun } from "docx";
 import { Typewriter } from 'react-simple-typewriter';
 import { FaCheckCircle, FaCloudUploadAlt } from "react-icons/fa";
 import { IconContext } from "react-icons";
 
 interface FileUploaderProps {
   title: string;
-  handleUpload: () => Promise<string>; // Function with no parameters and no return value
+  handleUpload: () => Promise<void>; // Function with no parameters and no return value
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Function that handles an event
   file: File | null; // File object or null
   error: string | null; // Error message or null
+  isUploaded: boolean;
+  setIsUploaded: (value: boolean | ((prev: boolean) => boolean)) => void
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({title, handleUpload, handleFileChange, file, error, isUploaded, setIsUploaded}) => {
-
-    ////////////////////////////////////////////////////////////////////////
-    
     const [loading2, setLoading2] = useState(false);
     
-    ////////////////////////////////////////////////////////////////////////////////////////////
     const handleUploadWrapper = async () => {
       try {
         setLoading2(true);
